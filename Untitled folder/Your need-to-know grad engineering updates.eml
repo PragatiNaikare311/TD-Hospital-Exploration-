@@ -1,0 +1,997 @@
+Received: from IA1PR11MB8245.namprd11.prod.outlook.com (2603:10b6:208:448::5)
+ by SA0PR11MB4671.namprd11.prod.outlook.com with HTTPS; Tue, 17 Oct 2023
+ 02:00:17 +0000
+Received: from CYZPR10CA0020.namprd10.prod.outlook.com (2603:10b6:930:8a::20)
+ by IA1PR11MB8245.namprd11.prod.outlook.com (2603:10b6:208:448::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6886.35; Tue, 17 Oct
+ 2023 02:00:15 +0000
+Received: from CY4PEPF0000EDD2.namprd03.prod.outlook.com
+ (2603:10b6:930:8a:cafe::fb) by CYZPR10CA0020.outlook.office365.com
+ (2603:10b6:930:8a::20) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6886.36 via Frontend
+ Transport; Tue, 17 Oct 2023 02:00:15 +0000
+Authentication-Results: spf=pass (sender IP is 165.91.22.121)
+ smtp.mailfrom=tamu.edu; dkim=fail (body hash did not verify)
+ header.d=tamu.edu;dmarc=pass action=none header.from=tamu.edu;compauth=pass
+ reason=100
+Received-SPF: Pass (protection.outlook.com: domain of tamu.edu designates
+ 165.91.22.121 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.91.22.121; helo=mail-1p-in-t1.syse.tamu.edu; pr=C
+Received: from mail-1p-in-t1.syse.tamu.edu (165.91.22.121) by
+ CY4PEPF0000EDD2.mail.protection.outlook.com (10.167.241.206) with Microsoft
+ SMTP Server id 15.20.6838.22 via Frontend Transport; Tue, 17 Oct 2023
+ 02:00:15 +0000
+Received: from mx0b-00178102.pphosted.com (mx0b-00178102.pphosted.com [148.163.139.245])
+	by mail-1p-in-t1.syse.tamu.edu (Postfix) with ESMTP id D7CDB405E3C6
+	for <dsullivan00@tamu.edu>; Mon, 16 Oct 2023 21:00:14 -0500 (CDT)
+Received: from pps.filterd (m0231226.ppops.net [127.0.0.1])
+	by mx0b-00178102.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39GNAEo8001931
+	for <dsullivan00@tamu.edu>; Mon, 16 Oct 2023 21:00:14 -0500
+Authentication-Results-Original: ppops.net;	spf=pass
+ smtp.mailfrom=easa@tamu.edu;	dkim=pass header.d=tamu.edu header.s=e2ma-k1;
+	dkim=pass header.d=e2ma.net header.s=e2ma;	dmarc=pass header.from=tamu.edu
+Received: from mail163-2z9c.e2ma.net (mail163-2z9c.e2ma.net [139.60.0.163])
+	by mx0b-00178102.pphosted.com (PPS) with ESMTPS id 3tr9dvky3s-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <dsullivan00@tamu.edu>; Mon, 16 Oct 2023 21:00:14 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=e2ma-k1; d=tamu.edu;
+ h=Content-Type:MIME-Version:Subject:From:To:Date:Reply-To:List-Unsubscribe:
+ Feedback-ID:from:to:subject:cc; i=easa@tamu.edu;
+ bh=jO8FsI2Rvu/rNU4zrlVyCENMBXZCw2u/LMjRIELmSqA=;
+ b=jGrCCphUoeHBDgWU/k3JSV1ypk1VAzxqjx7xgFAFAQ18A6RZjbm4YviAWfg4tV72CaacuKVN7wSF
+   DvZDCFh0ynRsaoIBqS3JPube8pV6opB8bZ7KQZ0SGWZBUXjA3BBlKgp1IEm5KfsKyCaKQ7eXE+3s
+   u/jvayKg3w9+8A+qNMXS4NgN2i6f0A/0babSVdF/t3Aj/hGf0ffKVjl3Dp0rsOcOBMhOIKlEyWNb
+   KPmgijKWfVIqJpHdri6HfWhiUpiN576mb5PFG+d5x1c+p8a2vjv1JcPsN7WZ1lGXbawS0EeOFuKT
+   47pWoWDIXDj/aSnWP0pAcSz0m+MO4cm9y/FyNQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=e2ma; d=e2ma.net;
+ h=Content-Type:MIME-Version:Subject:From:To:Date:Reply-To:List-Unsubscribe:
+ Feedback-ID; i=@mail163-2z9c.e2ma.net;
+ bh=jO8FsI2Rvu/rNU4zrlVyCENMBXZCw2u/LMjRIELmSqA=;
+ b=L4G80y5lstgrwkGeIqeF44uxmQkd8etbOlvHsFTDF4IR8qN5uzYz1qEDNotYM+UhnqpX0ZN1Mk4h
+   3erwls9TevQX+7Dj+oHLMrmMxZl7QJdxqwQK9DwNCgpg0uMowfARtGZ42p4zgeIMOgwO+6POgkMM
+   INUvx78Wbc9nO5HOFCA=
+Received: by mail163-2z9c.e2ma.net id h5nlas34k48v for <dsullivan00@tamu.edu>; Mon, 16 Oct 2023 21:00:13 -0500 (envelope-from <easa@tamu.edu>)
+Content-Type: multipart/alternative;
+ boundary="==169750801333974=="
+Subject: Your need-to-know grad engineering updates
+From: "Texas A&M University College of Engineering" <easa@tamu.edu>
+To: dsullivan00@tamu.edu
+Date: Tue, 17 Oct 2023 02:00:13 -0000
+Reply-To: easa@tamu.edu
+Precedence: bulk
+List-Unsubscribe: <https://t.e2ma.net/optout/miczok/a?s=YBZfkShRL_pxrU77P3zlU-LHFfSZ5o4GW2HhaQ9BQ2E>,<mailto:a.miczok.ugcgb.optout@e2ma.net>
+X-Test-Mailing: no
+Feedback-ID: 1962380:629345676:None:EMMAFBL
+Message-ID: <3tr9dvky3s-1@m0231226.ppops.net>
+X-Proofpoint-ORIG-GUID: hRTD22rOIeYChYnQ71KRV4jDiLLwgBWI
+X-CLX-Shades: MLX
+X-CLX-Response: 1TFkXGB0TEQpMehcbGRIRCllEF3p9U39bWEJnZWtjEQpYWBd6SRh9bk1ZeE1 hexEKeE4Xbk8TUkh8UE9JWnkRCnhLF3pJGH1uTVl4TWF7EQp5TBdoWVxIGm9kS0JYXxEKQ0gXBx gSEhEKQ1kXBxgdExEKQ0kXGgQaGhoRCllNF2dmchEKWUkXBxkacRoQG3cGGBITcRsfHxgQGncGG
+ BoGGhEKWV4XbGx5EQpJRhdeS0dfdRh1QkVZXk9OEQpJRxd4T00RCkNOF0J4fm4YGFhlY09zaUJz RHsdG2F4fB5AbkNmZl1NaH1jEQpYXBcfBBoEGRkeBRsaBBsbGgQbGR4EGR8QGx4aHxoRCl5ZF0l zHhNgEQpNXBccGB0RCkxaF2xpTU1dEQpMRhdva2tNa2sRCkJPF2JnS0dnZ0N7fGtlEQpDWhcbGR
+ MEHBoEGgQbHBkRCkJeFxsRCkJGF2YZHWN+S2tvaUgBEQpCRxdpHEZJXFpjRU9sHBEKQlwXGxEKX k4XGxEKQksXbk8TUkh8UE9JWnkRCkJJF25PE1JIfFBPSVp5EQpCRRdrcBl4TVt9QVtJHBEKQk4X bk8TUkh8UE9JWnkRCkJMF3pJGH1uTVl4TWF7EQpCbBdmTxNmTElCc0lAWBEKQkAXYVhQbWYSGkJ
+ NaB0RCkJYF2tJThx4ax1+S2gFEQpaWBcbHxEKeUMXYkIeBUVsRx94REERCllLFxsZGhMbEQpaSx cbGRoTGxEKcGcXZWloXkBweEVTEmIQGRoRCnBoF3oBTlJgQGgZeUkfEBkaEQpwaBdrXUVyb1seH WNoSRAZGhEKcGgXYUhOe3NISEJJYh4QHRoRCnBoF2FvUEYSQ1ASE2xIEBkaEQpwaBdmE21nY2NN
+ emlwchAZGhEKcGgXY1xSZF8efH1NYnwQGRoRCnBoF2dFYBJDZmNYRH9YEBkaEQpwaBdjBX9cQVl ibxlBSRAZGhEKcH0XbnxyRm9DfVIdaxoQGRoRCnB9F2F+WnNeZm5JZXAeEBkaEQpwfRdpThJSb3 tlYG1GHBAZGhEKcH0XZxpbTmFSXnBpAWcQGRoRCnB9F20SW09kbHJcWxhLEBkaEQpwfRd6BUFNT
+ 2h9cBJZUBAZGhEKcH0XYXJbGntuZ2cdEloQGRoRCnB9F2ZJUEIbeWF8W3xJEBkaEQpwfRdien5A Q1BDTmhwZhAZGhEKcH0XZEBMfW9CZX5pQlsQGRoRCnB9F3pdYEAFRXseGmxpEBkaEQpwfRdnRmB pQEwFGHJzZxAZGhEKcH0XY0diZ39zen5YTU0QGRoRCnB9F2kFG3xEWlsFbkRBEBkaEQpwfRdnAW
+ B9cBtQE0cbehAZGhEKcH0XYh1Je05reEMfTVgQHRIRCnB9F2MeUkATAXxsS3xlEBkaEQpwfRd6Q UVPQEFtS1tnWxAZGhEKcGcXbWEYGGJcH0ZbU0YQGRoRCnB9F2x6bWRrE11ma2dDEBwSEQpwZxdo ZB5IEx1+X2RwUBAZGhEKcH0XeltZc18TR1tzRxMQGRoRCnB9F2BpHkJsQEZdfHNEEBkaEQpwfRd
+ hHmVOQG9BS25THxAZGhEKcH0XYx4TTmxTGm9Za1wQGRoRCnB/F29EYVASE38bHBJ+EBwZEQpwXx dnb05Pa31CE35fYRAHGxsdEQpwfxdsTUAdTR8ZGxtkTxAZGhEKcF8XYX5ac15mbkllcB4QGRoRC nB/F2JbS0dga1MbXWBEEBIeEQpwXxdmG19MSWBrR2ZNchAZGhEKcH8XaV1tX1JvRVJMZgUQHRIR
+ CnBfF2thfGJCeUhDGQFdEBkaEQpwfxd6ZX9ZHFh6THJIeRAbGR8RCnBfF2d9XR9PUFxsbhwaEBk aEQpwfxdiRlN4ZmhpHWFMSxAbGR0RCnBfF2RcExhjYn1FHF9wEBkaEQpwfxdhW05aXRsSZWxaeR AbGRoRCnBfF299ZE9TGFlPcGFtEBkaEQpwfxd6X0tncnpZH3xITxAdGhEKcF8Xb3JYU2Ndf1laU
+ gUQGRoRCnBfF3pQWEljRFBPUFNfEBkaEQpwfxd6R39dW29zaHoTWBAbGh4RCnBfF2ZYQ3lpHkRP eWVQEBkcEQpwXxdnW0dycHxeSGRtZxAZGhEKcH8XZlBAEgVjE0NmXn8QBxsTEQpwXxdhQ01Pb3k baW9FARAZGhEKcH8Xa05wZ34aS0JFH2sQEhgRCnBfF29ZHUMYGEQZRGwdEBwaEQpwXxdibl9uRX
+ x9XBtGSRAZGhEKcF8XbnpPR35eZ05tY0AQHRIRCnBfF29GZEFzTEIbRF4fEBkaEQpwfxdkE10BW nJAaV8ZThASHxEKcF8Xb11Hb00fZWhibH0QGRoRCnB/F21DZWQYZkhNYX8aEBwaEQpwXxdlZGBo ZUlNW1oBbxAcGhEKcH8XeltZc18TR1tzRxMQGRoRCnB/F2wZWkhNXWd5axIfEBkaEQpwfxdrHGs
+ cHVxQGwF9axAZGhEKcGwXaAFcf1pNBR14TVAQGRoRCm1+FxoRClhNF0sRIA==
+X-Proofpoint-GUID: hRTD22rOIeYChYnQ71KRV4jDiLLwgBWI
+X-Proofpoint-SPF-Result: pass
+X-Proofpoint-SPF-Record: v=spf1 include:spf0.tamu.edu include:spf1.tamu.edu include:spf2.tamu.edu
+ include:spf3.tamu.edu include:spf4.tamu.edu include:spf5.tamu.edu
+ include:spf6.tamu.edu include:spf7.tamu.edu include:spf8.tamu.edu -all
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-16_13,2023-10-12_01,2023-05-22_02
+X-Proofpoint-DKIM-Result: pass
+X-Proofpoint-Spam-Reason: orgsafe
+Return-Path: easa@tamu.edu
+X-MS-Exchange-Organization-ExpirationStartTime: 17 Oct 2023 02:00:15.2900
+ (UTC)
+X-MS-Exchange-Organization-ExpirationStartTimeReason: OriginalSubmit
+X-MS-Exchange-Organization-ExpirationInterval: 1:00:00:00.0000000
+X-MS-Exchange-Organization-ExpirationIntervalReason: OriginalSubmit
+X-MS-Exchange-Organization-Network-Message-Id:
+ 0aa2080c-7734-4f6e-a41f-08dbceb4ce41
+X-EOPAttributedMessage: 0
+X-EOPTenantAttributedMessage: 68f381e3-46da-47b9-ba57-6f322b8f0da1:0
+X-MS-Exchange-Organization-MessageDirectionality: Incoming
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic:
+ CY4PEPF0000EDD2:EE_|IA1PR11MB8245:EE_|SA0PR11MB4671:EE_
+X-MS-Exchange-Organization-AuthSource:
+ CY4PEPF0000EDD2.namprd03.prod.outlook.com
+X-MS-Exchange-Organization-AuthAs: Anonymous
+X-MS-Office365-Filtering-Correlation-Id: 0aa2080c-7734-4f6e-a41f-08dbceb4ce41
+X-MS-Exchange-AtpMessageProperties: SA|SL
+X-MS-Exchange-Organization-SCL: -1
+X-Microsoft-Antispam: BCL:0;
+X-Forefront-Antispam-Report:
+ CIP:165.91.22.121;CTRY:US;LANG:en;SCL:-1;SRV:;IPV:NLI;SFV:NSPM;H:mail-1p-in-t1.syse.tamu.edu;PTR:mail-1p-in-t1.syse.tamu.edu;CAT:NONE;SFS:;DIR:INB;
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Oct 2023 02:00:15.1025
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0aa2080c-7734-4f6e-a41f-08dbceb4ce41
+X-MS-Exchange-CrossTenant-Id: 68f381e3-46da-47b9-ba57-6f322b8f0da1
+X-MS-Exchange-CrossTenant-AuthSource:
+ CY4PEPF0000EDD2.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: Internet
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB8245
+X-MS-Exchange-Transport-EndToEndLatency: 00:00:02.2411748
+X-MS-Exchange-Processed-By-BccFoldering: 15.20.6886.034
+X-Microsoft-Antispam-Mailbox-Delivery:
+	ucf:0;jmr:0;auth:0;dest:I;ENG:(910001)(944506478)(944626604)(920097)(930097)(140003)(1420103);
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?bHhhVzJSSzBxV3ZKejJqQ2JyZEdrWEVta0QvbUNYN2NWNWxIMit3VVh1dFkx?=
+ =?utf-8?B?M0w1TDF3RVljWVRnVStjdjh0WjYrU0ZvdU9IaUthUEZzYjZIT01zM0xvWDJV?=
+ =?utf-8?B?UzJQc1dqOWVRTXRuZHBla0EzM3Y1T1hPMWk5Vk1uak1ldkZPOTI3RzBGVHVR?=
+ =?utf-8?B?VHNsN0F5K1U3dVpDWm1hSTl5S1NoVkw0bW9SdkMyUW5vT1lnUUVRdFIzTFg1?=
+ =?utf-8?B?VkVneHhqTlUvUzdQcE9JeDVMTXl0M3dIbGkyLzBEbURmRmpwT3ZkTW1DMTdF?=
+ =?utf-8?B?d3JySUU2VzVkZUhFeWhtWjlZZlZYUlJyaUhGaWduM1o5Q2F2cS9pMFpOQVI0?=
+ =?utf-8?B?MS9ESTY4K1JHL2lDZU9lQ0J4MnNZYnB3SER4MDNNeE5PS3lKUU5QRHZEbDhC?=
+ =?utf-8?B?RXllZjN2Zlg2alU3SXNWOVkzdE1CNXZHdVJDOTFHd2g0NHIxcXh4SVVvT2hM?=
+ =?utf-8?B?ZDhUd1Uyd21EZXJETEpsUkVhYzVsSnRRRWZIenZPU0RmTWZnemsyVUZrUDBZ?=
+ =?utf-8?B?RkFiUXdpQjVaQ0VISXhXb0cvSnFHTm16QUNWUWVtNDNJWGc4V1hBdHM4bWJY?=
+ =?utf-8?B?Tkl2cUdNR2pPVXJPYndIQlNxcW9abzFUR2tYeXVtanpYc2VTeHNYeTQrOXpR?=
+ =?utf-8?B?SHVuVXlmNVJ1UnlmSUtxeHAvdTRXbDJDaXlGTFlQVmM2ZmJUNSs2NWNERzU1?=
+ =?utf-8?B?K1RoUkdSaHFPZTFyODR1RGZwajdtQXhScW1OUzNKeVdSUWpnTXY4T2R6UUVU?=
+ =?utf-8?B?RmhSZVhNOXF1dEJxV2FWQUFkRm0yNXhWSi9Cangycm1lNnFucnNlZlpSVzhF?=
+ =?utf-8?B?UGN6WndRdEJKZWc2b3R6QTdtYzVNZFNKNDYrZ1pjYks5cFliWTJCai9Tc1VM?=
+ =?utf-8?B?STF6RVVoVmJhbHVSQUg4S2xseERNc1FsdE1XYmpaTDNCRFNyR3YvVURiYXJm?=
+ =?utf-8?B?UmwvaS8wV01qV0ZPQTdQdUcza3JRZUNzU1ZzSlZFaklMczBWdUhIYm5WTkNk?=
+ =?utf-8?B?NFpxeG9kU2dPSjFaMzFlNGNacndYb1loeDJsUkR5SzJjYTcyWkpIQ1ptcUVM?=
+ =?utf-8?B?VDBjby9uM0gvUDJrQk5JNW1Ic1VYZHlWV3I5RGVOS1V4T2trQjdOWWVVT0FT?=
+ =?utf-8?B?UTVxOGVlSFg2TFE5V1VCSTBlUzlQcmxSMXlyMUxOR0JaK0pDK1FKZkpneU1a?=
+ =?utf-8?B?aFR0UkZ4OXJMMDI3dXI5dkExK2MzZk5wRkJuUzRmZ0lkZ2hkR212RWxQNmhS?=
+ =?utf-8?B?MldOdW1kVHhzcnZjVmxHSkxUY0locGVmem5XaUFxTTNOSEg5enNGQzFJL2du?=
+ =?utf-8?B?eU9Za1lELzNYT2JKZk9DQVEyeXM4VlFxdlVmL2d5VVR2SEFMNHc5RmwwdEJT?=
+ =?utf-8?B?SmRxVkhDQlY1dDhYNDZlSTZUbWtOMDlKN0doRFRnL2VXdXRIODk2dDkwWm1u?=
+ =?utf-8?B?K1lTSy9aTFE5TldHSk9lTCtTNGhUVCsyNjFQZzdXUWZXZ0JWcmdBN0t2T1VH?=
+ =?utf-8?B?eExHSGJSVHcyVFhGK2hka2I4RHB3ZFFNVERhMjh0MnE4Sk16bUswK0E5OVFC?=
+ =?utf-8?B?MStGWktTRFhSeEE0cXM2VUNwVkQ1ODhjWUszOGlPUWNIaGk0RitlZ09PM1pS?=
+ =?utf-8?B?a0lGdUdPd29BK2U3QVNpOWtta0VEYUNKMzB0RVg0TTA5TFZhamE3KzJMV3dr?=
+ =?utf-8?B?TWFUVFZWeFVHdmV6a2tPNnh5NUNtelYzMkxhWXZ3c2lWbTBYUFFIaFAvWVpy?=
+ =?utf-8?B?WEh5bHAzSEcxRnpUWTNJbUJRMlUvNk9NaXBvaGIvTFhYc0RHNzRYTWZvZWo1?=
+ =?utf-8?B?S0MwZy9VcC9qQnJUVm1KZz09?=
+MIME-Version: 1.0
+
+--==169750801333974==
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+
+
+This is a quick heads-up to let you know that the following mailing, whose =
+send-off was scheduled in advance, has just begun sending.
+
+Texas A&M University College of Engineering
+
+# HOWDY, AGS!
+
+# Check out these cool opportunities!
+
+
+
+## Events & Opportunities
+
+
+
+  * Ingeniare Symphonium: Engineering Orchestra Auditions: Ingeniare Sympho=
+nium is the university's first orchestra made up of ONLY engineering studen=
+ts, and we want you to join! We welcome all skill levels, and membership is=
+ absolutely free. Contact us at ingeniare@lists.tamu.edu (mailto:ingeniare@=
+lists.tamu.edu) with any questions. We can't wait to hear from you!
+[% link:https://urldefense.com/v3/__https://docs.google.com/forms/d/e/1FAIp=
+QLScHbH8bGQJspulmnVlmXvMQtBDUtKMqZ9QxacNitrCWBVxKBA/viewform__;!!KwNVnqRv!C=
+bpHlHM8jCVzWPCQb25lgqpmbhrkQbMTmjyr63aoZjXzkcd8GbCTza8cdNDEoyMq60JivlEh_vJS=
+vitspQ$  name=3D"Please fill out our interest form if you would like to aud=
+ition." content=3D"Please fill out our interest form if you would like to a=
+udition." %]
+
+  * TAMU NSBE: CONNECTING ALL GRADUATES ENGINEERS & SCHOLARS:  Howdy!
+[% link:https://urldefense.com/v3/__http://www.tamunsbe.org__;!!KwNVnqRv!Cb=
+pHlHM8jCVzWPCQb25lgqpmbhrkQbMTmjyr63aoZjXzkcd8GbCTza8cdNDEoyMq60JivlEh_vJPG=
+kU9gA$  name=3D"TAMU NSBE (National Society of Black Engineers at Texas A&M=
+ University)" content=3D"TAMU NSBE (National Society of Black Engineers at =
+Texas A&M University)" %]
+would like to connect with all current graduate students at Texas A&M.
+[% link:https://urldefense.com/v3/__https://forms.gle/NyVL4Pd9Gj7AiUnu6__;!=
+!KwNVnqRv!CbpHlHM8jCVzWPCQb25lgqpmbhrkQbMTmjyr63aoZjXzkcd8GbCTza8cdNDEoyMq6=
+0JivlEh_vKAory3VA$  name=3D"Please fill out this three minute survey" conte=
+nt=3D"Please fill out this three minute survey" %], and tell us how the TAM=
+U NSBE chapter can better serve you and the graduates community at Texas A&=
+M. Our Mission: We aim to "increase the number of culturally responsible Bl=
+ack Engineers who excel academically, succeed professionally and positively=
+ impact the community."
+  * University Health Services (formerly CAPS) in Zachry: Student mental he=
+alth and wellness is important. For this reason, the College of Engineering=
+ and UHS are partnering to offer counseling services, Monday through Friday.
+[% link:https://urldefense.com/v3/__https://tamucapsportal.pointnclick.com/=
+__;!!KwNVnqRv!CbpHlHM8jCVzWPCQb25lgqpmbhrkQbMTmjyr63aoZjXzkcd8GbCTza8cdNDEo=
+yMq60JivlEh_vIlWQNjTw$  name=3D"To schedule your first meeting, register fo=
+r services." content=3D"To schedule your first meeting, register for servic=
+es." %]
+UHS also offers
+[% link:https://engineering.tamu.edu/student-life/student-counseling-servic=
+e-in-zachry.html name=3D"drop-in hours" content=3D"drop-in hours" %]
+via Zoom every Friday. UHS also provides non-emergency, same-day assistance=
+ for immediate emotional support needs at the Student Services Building, on=
+ the fourth floor, Monday to Friday, from 8 a.m.-4 p.m. For more informatio=
+n on all services provided by the UHS, please visit their
+[% link:http://caps.tamu.edu/ name=3D"website" content=3D"website" %].
+
+
+
+## Career & Funding
+
+
+
+
+
+  * Finding a Job/Internship (Event Date - 10/17)  Effectively find job & i=
+nternship postings using HireAggies, LinkedIn, and CareerShift.
+[% link:https://tamu.zoom.us/meeting/register/tJMudu6pqjopGNBpF1vmtrDIC4ldI=
+e_jVASj name=3D"Register for our Finding a Job/Internship workshop." conten=
+t=3D"Register for our Finding a Job/Internship workshop." %]
+  * On-Campus Employer Event - Adobe (Event Date - 10/17): Join us for an e=
+xciting opportunity to supercharge your career in Computer Science, Electri=
+cal Engineering, Data Science, or ML development! Whether you're a Masters =
+or PhD student, we're on the lookout for talent with a graduation date of a=
+t least December 2024. With the chance to submit your resume and register, =
+you can be part of a transformative experience. Even researchers seeking in=
+sights are welcome, as our team is here to guide you. Don't miss out on thi=
+s incredible chance to shape your future!
+[% link:https://urldefense.com/v3/__https://careers.adobe.com/us/en/event/6=
+4e5256e9df18541dda150ab/Texas-A-M-University-College-Station__;!!KwNVnqRv!C=
+bpHlHM8jCVzWPCQb25lgqpmbhrkQbMTmjyr63aoZjXzkcd8GbCTza8cdNDEoyMq60JivlEh_vJa=
+O7CXDg$  name=3D"Be sure to register with your personal email address." con=
+tent=3D"Be sure to register with your personal email address." %]
+
+  * Texas A&M Academy Night (Event Date - 10/17): Join us for
+[% link:https://urldefense.com/v3/__https://drive.google.com/file/d/1sbOD1m=
+k2xWEeoRYEteVFkmZ8y5EiGGGa/view__;!!KwNVnqRv!CbpHlHM8jCVzWPCQb25lgqpmbhrkQb=
+MTmjyr63aoZjXzkcd8GbCTza8cdNDEoyMq60JivlEh_vJfuKL0Xg$  name=3D"TAMU Academy=
+ Night" content=3D"TAMU Academy Night" %], where the Academy is returning t=
+o campus for an exciting evening event! All majors and classifications are =
+welcome, so don't miss out.
+[% link:https://urldefense.com/v3/__https://forms.office.com/Pages/Response=
+Page.aspx?id=3D4bbwNOIJwUa35hdXeTT59RH_Cry3tUpOs3w2BmanoFlUMjBZTFFYUk9NSjVD=
+OU5IQlNBNzhPRTZZVS4u__;!!KwNVnqRv!CbpHlHM8jCVzWPCQb25lgqpmbhrkQbMTmjyr63aoZ=
+jXzkcd8GbCTza8cdNDEoyMq60JivlEh_vIvNfdSNQ$  name=3D"RSVP for this event." c=
+ontent=3D"RSVP for this event." %]
+[% link:https://urldefense.com/v3/__https://forms.office.com/Pages/Response=
+Page.aspx?id=3D4bbwNOIJwUa35hdXeTT59RH_Cry3tUpOs3w2BmanoFlUMjBZTFFYUk9NSjVD=
+OU5IQlNBNzhPRTZZVS4u__;!!KwNVnqRv!CbpHlHM8jCVzWPCQb25lgqpmbhrkQbMTmjyr63aoZ=
+jXzkcd8GbCTza8cdNDEoyMq60JivlEh_vIvNfdSNQ$  name=3D"https://urldefense.com/=
+v3/__https://forms.office.com/Pages/ResponsePage.aspx?id=3D4bbwNOIJwUa35hdX=
+eTT59RH_Cry3tUpOs3w2BmanoFlUMjBZTFFYUk9NSjVDOU5IQlNBNzhPRTZZVS4u__;!!KwNVnq=
+Rv!CbpHlHM8jCVzWPCQb25lgqpmbhrkQbMTmjyr63aoZjXzkcd8GbCTza8cdNDEoyMq60JivlEh=
+_vIvNfdSNQ$ " content=3D"" %]We also have incredible opportunities for grad=
+uating seniors in our Executive Trainee Program and 2024 Summer Internship =
+Program, with interviews scheduled for October 18.
+  * Unlocking LinkedIn's Hidden Power (Event Date - 10/18): Learn how to ma=
+ke your LinkedIn profile more effective and how to use LinkedIn as a resear=
+ch, networking, and job finding tool. Insightful course for all skill level=
+s from new user to expert.
+[% link:https://tamu.zoom.us/meeting/register/tJEofuCqrDIsGtCqXfbw1Oft-jnzh=
+ALYaSDM name=3D"Register for our LinkedIn workshop." content=3D"Register fo=
+r our LinkedIn workshop." %]
+  * Immigration 101 Webinar (Event Date - 10/18): Howdy Texas A&M internati=
+onal students! Here's a fantastic opportunity you won't want to miss: Join =
+us on Oct. 18 from 5:30-7:30 p.m. for an enlightening webinar titled "Life =
+After Graduation: What is Your Immigration Plan?" in collaboration with the=
+  Texas A&M Career Center, ISSS, and Texas A&M University, along with Frago=
+men Law Firm. This event will provide crucial insights into U.S. career opt=
+ions, immigration opportunities, and the specialized services offered to in=
+ternational students. Plus, you can have a direct chat with an ISSS advisor.
+[% link:https://urldefense.com/v3/__https://tinyurl.com/ypbr4bnc__;!!KwNVnq=
+Rv!CbpHlHM8jCVzWPCQb25lgqpmbhrkQbMTmjyr63aoZjXzkcd8GbCTza8cdNDEoyMq60JivlEh=
+_vKADmh0WA$  name=3D"Register now" content=3D"Register now" %]
+and let's shape your exciting post-graduation journey together!
+  * Build Your Project Portfolio Workshop (Event Date - 10/24): Ready to di=
+stinguish yourself as a future data analyst or computer scientist?
+[% link:https://urldefense.com/v3/__https://docs.google.com/forms/d/e/1FAIp=
+QLScvuLVdf5WEBDctZxGneisOZ84F34onXQvrMaly9SbYOeSnFw/viewform?pli=3D1__;!!Kw=
+NVnqRv!CbpHlHM8jCVzWPCQb25lgqpmbhrkQbMTmjyr63aoZjXzkcd8GbCTza8cdNDEoyMq60Ji=
+vlEh_vJAhbI8vQ$  name=3D"Register for our Career Center's exclusive worksho=
+p" content=3D"Register for our Career Center's exclusive workshop" %]
+at 10:30-11:30 a.m. in ZACH 297 and embark on a journey to craft your uniqu=
+e online presence. Learn how to create a professional website and leverage =
+the power of GitHub to showcase your skills and projects. We'll teach you t=
+he strategies to grab the attention of recruiters in a competitive job mark=
+et. Don't miss this chance to elevate your career prospects. Take a proacti=
+ve step towards a successful future in tech - join us and unlock your poten=
+tial!
+  * Virtual Information Sessions - Getting to Know Goldman Sachs: Calling a=
+ll ambitious students to unlock your future in finance with Goldman Sachs' =
+exclusive virtual series. Join us to explore the 2024 Summer Analyst Progra=
+ms in Compliance, Controllers, Operations, and Risk. Get insider tips from =
+our recruiters, stand out in the competitive field, and gain valuable insig=
+hts to launch your career. Don't miss this chance to kick-start your journe=
+y with Goldman Sachs.
+[% link:https://urldefense.com/v3/__https://recruiting360.avature.net/candi=
+dates?projectId=3D19889&source;=3DCandidate*Porta__;Kw!!KwNVnqRv!CbpHlHM8jC=
+VzWPCQb25lgqpmbhrkQbMTmjyr63aoZjXzkcd8GbCTza8cdNDEoyMq60JivlEh_vIDJjiN2Q$  =
+name=3D"Register now for one of two sessions." content=3D"Register now for =
+one of two sessions." %]
+
+  * Career Center - HireAggies: Still looking for a summer internship? Don'=
+t forget to check out
+[% link:https://careercenter.tamu.edu/ name=3D"HireAggies.com" content=3D"H=
+ireAggies.com" %]
+where there are over 100 opportunities available to apply for!
+
+
+
+## Academics
+
+
+
+  * Launching Your Entrepreneurial Mindset: An entrepreneurial mindset is r=
+esilient, resourceful and solution-oriented; indeed the mindset of a life-l=
+ong learner! Consider a one-hour course requiring minimal effort outside th=
+e classroom, but offering to have a positive impact on your future as an en=
+gineer! You'll hear the journeys of successful entrepreneurs in technology =
+innovation and find you already possess many of the characteristics require=
+d to succeed! All are welcome, but space is limited for MTDE 252/462/652. V=
+isit the
+[% link:https://engineering.tamu.edu/student-life/eep/index.html name=3D"Me=
+loy Engineering Innovation and Entrepreneurship Program" content=3D"Meloy E=
+ngineering Innovation and Entrepreneurship Program" %]
+and explore our many courses.
+  * Engineering Global Programs Opportunities: Howdy! Are you interested in=
+ studying what you love while exploring the world?
+[% link:https://engineering.tamu.edu/academics/global/opportunities-abroad/=
+index.html name=3D"View our available programs on our website, and apply to=
+ one you are interested in today!" content=3D"View our available programs o=
+n our website, and apply to one you are interested in today!" %]
+Our office assists engineering students with finding programs that are righ=
+t for them, ranging from faculty-led classes to semester exchanges at forei=
+gn universities across the globe.
+[% link:https://urldefense.com/v3/__https://tamuabroad.via-trm.com/authV2/w=
+elcome__;!!KwNVnqRv!CbpHlHM8jCVzWPCQb25lgqpmbhrkQbMTmjyr63aoZjXzkcd8GbCTza8=
+cdNDEoyMq60JivlEh_vLeFFKKWw$  name=3D"Create a VIA account with your NetID =
+to become a traveler today through our portal" content=3D"Create a VIA acco=
+unt with your NetID to become a traveler today through our portal" %], or v=
+isit our office in ZACH 410.
+
+
+
+
+
+If you have ANY questions or concerns, please contact us at engineeringvcd@=
+tamu.edu (mailto:engineeringvcd@tamu.edu).
+
+Thanks & Gig 'em!
+
+College of Engineering
+
+Texas A&M University
+
+Engineering Academic and Student Affairs
+
+You are receiving this official university correspondence, sent on behalf o=
+f Texas A&M College of Engineering, because you are either an incoming, cur=
+rent or former student, affiliate, staff or faculty member of Texas A&M Uni=
+versity.
+
+This email was sent to [% member:email %].
+
+
+
+3127 TAMU Texas A&M University | College Station, TX 77843 US=
+
+--==169750801333974==
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dutf-8"><d=
+iv style=3D"background-color: #fadba8; border: solid 1px #f5b85d; font-size=
+: 12px; font-family: Arial, Helvetica, Verdana; padding: 5px">This is a qui=
+ck heads-up to let you know that the following mailing, whose send-off was =
+scheduled in advance, has just begun sending.</div>
+<br>
+<!DOCTYPE html>
+<html lang=3D"en" xmlns:o=3D"urn:schemas-microsoft-com:office:office" xmlns=
+:v=3D"urn:schemas-microsoft-com:vml"><head><title></title><meta content=3D"=
+width=3Ddevice-width,initial-scale=3D1" name=3D"viewport"><!--[if mso]><xml=
+><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch><o:AllowPNG=
+/></o:OfficeDocumentSettings></xml><![endif]--><!--[if !mso]><!--><link hre=
+f=3D"https://fonts.googleapis.com/css?family=3DOpen+Sans" rel=3D"stylesheet=
+" type=3D"text/css"><!--<![endif]--><style>
+*{box-sizing:border-box}body{margin:0;padding:0}a[x-apple-data-detectors]{c=
+olor:inherit!important;text-decoration:inherit!important}#MessageViewBody a=
+{color:inherit;text-decoration:none}p{line-height:inherit}.desktop_hide,.de=
+sktop_hide table{mso-hide:all;display:none;max-height:0;overflow:hidden}.im=
+age_block img+div{display:none} @media (max-width:620px){.image_block img.f=
+ullWidth{max-width:100%!important}.mobile_hide{display:none}.row-content{wi=
+dth:100%!important}.stack .column{width:100%;display:block}.mobile_hide{min=
+-height:0;max-height:0;max-width:0;overflow:hidden;font-size:0}.desktop_hid=
+e,.desktop_hide table{display:table!important;max-height:none!important}.ro=
+w-3 .column-1 .block-3.divider_block td.pad,.row-4 .column-1 .block-2.divid=
+er_block td.pad,.row-6 .column-1 .block-2.divider_block td.pad,.row-8 .colu=
+mn-1 .block-2.divider_block td.pad{padding:10px 20px!important}.row-3 .colu=
+mn-1 .block-3.divider_block .alignment table,.row-4 .column-1 .block-2.divi=
+der_block .alignment table,.row-6 .column-1 .block-2.divider_block .alignme=
+nt table,.row-8 .column-1 .block-2.divider_block .alignment table{display:i=
+nline-table}.row-4 .column-1 .block-1.heading_block td.pad,.row-6 .column-1=
+ .block-1.heading_block td.pad,.row-8 .column-1 .block-1.heading_block td.p=
+ad{padding:20px 20px 10px!important}.row-3 .column-1 .block-2.heading_block=
+ td.pad{padding:10px 20px 0!important}.row-3 .column-1 .block-1.heading_blo=
+ck td.pad{padding:5px 20px 0!important}.row-10 .column-1 .block-1.paragraph=
+_block td.pad,.row-10 .column-1 .block-2.paragraph_block td.pad,.row-11 .co=
+lumn-1 .block-1.paragraph_block td.pad{padding:0 20px 20px!important}.row-5=
+ .column-1 .block-1.list_block td.pad,.row-7 .column-1 .block-2.list_block =
+td.pad,.row-9 .column-1 .block-1.list_block td.pad{padding:0 20px 10px!impo=
+rtant}.row-5 .column-1 .block-1.list_block ul,.row-7 .column-1 .block-2.lis=
+t_block ul,.row-9 .column-1 .block-1.list_block ul{line-height:auto!importa=
+nt}.row-1 .column-1,.row-7 .column-1{padding:0!important}.row-3 .column-1{p=
+adding:20px 0 0!important}.row-5 .column-1{padding:0 0 10px!important}.row-=
+11 .column-1{padding:5px 0 10px!important}.row-13 .column-1{padding:20px 20=
+px 30px!important}}
+</style></head><body style=3D"background-color:#dedede;margin:0;padding:0;-=
+webkit-text-size-adjust:none;text-size-adjust:none"><table border=3D"0" cel=
+lpadding=3D"0" cellspacing=3D"0" class=3D"nl-container" role=3D"presentatio=
+n" style=3D"mso-table-lspace:0;mso-table-rspace:0;background-color:#dedede"=
+ width=3D"100%"><tbody><tr><td><table align=3D"center" border=3D"0" cellpad=
+ding=3D"0" cellspacing=3D"0" class=3D"row row-1" role=3D"presentation" styl=
+e=3D"mso-table-lspace:0;mso-table-rspace:0;background-color:#dedede" width=
+=3D"100%"><tbody><tr><td><table align=3D"center" border=3D"0" cellpadding=
+=3D"0" cellspacing=3D"0" class=3D"row-content stack" role=3D"presentation" =
+style=3D"mso-table-lspace:0;mso-table-rspace:0;border-radius:0;color:#000;w=
+idth:600px;margin:0 auto" width=3D"600"><tbody><tr><td class=3D"column colu=
+mn-1" style=3D"mso-table-lspace:0;mso-table-rspace:0;font-weight:400;text-a=
+lign:left;padding-top:20px;vertical-align:top;border-top:0;border-right:0;b=
+order-bottom:0;border-left:0" width=3D"100%"><table border=3D"0" cellpaddin=
+g=3D"0" cellspacing=3D"0" class=3D"html_block block-1" role=3D"presentation=
+" style=3D"mso-table-lspace:0;mso-table-rspace:0" width=3D"100%"><tbody><tr=
+><td class=3D"pad"><div align=3D"center" style=3D"font-family:Open Sans,Hel=
+vetica Neue,Helvetica,Arial,sans-serif;text-align:center"></div>
+</td></tr></tbody></table>
+</td></tr></tbody></table></td></tr></tbody></table><table align=3D"center"=
+ border=3D"0" cellpadding=3D"0" cellspacing=3D"0" class=3D"row row-2" role=
+=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rspace:0" width=3D"=
+100%"><tbody><tr><td><table align=3D"center" border=3D"0" cellpadding=3D"0"=
+ cellspacing=3D"0" class=3D"row-content stack" role=3D"presentation" style=
+=3D"mso-table-lspace:0;mso-table-rspace:0;background-color:#fff;color:#000;=
+width:600px;margin:0 auto" width=3D"600"><tbody><tr><td class=3D"column col=
+umn-1" style=3D"mso-table-lspace:0;mso-table-rspace:0;font-weight:400;text-=
+align:left;vertical-align:top;border-top:0;border-right:0;border-bottom:0;b=
+order-left:0" width=3D"100%"><table border=3D"0" cellpadding=3D"0" cellspac=
+ing=3D"0" class=3D"image_block block-1" role=3D"presentation" style=3D"mso-=
+table-lspace:0;mso-table-rspace:0" width=3D"100%"><tbody><tr><td class=3D"p=
+ad" style=3D"width:100%;padding-right:0;padding-left:0"><div align=3D"cente=
+r" class=3D"alignment" style=3D"line-height:10px"><img alt=3D"Texas A&amp;M=
+ University College of Engineering" class=3D"fullWidth" src=3D"https://d31h=
+zlhk6di2h5.cloudfront.net/20231016/13/f5/db/0c/5bd3c19af7d336953f8d1b02.jpg=
+" style=3D"display:block;height:auto;border:0;max-width:600px;width:100%" t=
+itle=3D"Texas A&amp;M University College of Engineering" width=3D"600"></di=
+v>
+</td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></tab=
+le><table align=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0"=
+ class=3D"row row-3" role=3D"presentation" style=3D"mso-table-lspace:0;mso-=
+table-rspace:0" width=3D"100%"><tbody><tr><td><table align=3D"center" borde=
+r=3D"0" cellpadding=3D"0" cellspacing=3D"0" class=3D"row-content stack" rol=
+e=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rspace:0;backgroun=
+d-color:#fff;border-radius:0;color:#000;width:600px;margin:0 auto" width=3D=
+"600"><tbody><tr><td class=3D"column column-1" style=3D"mso-table-lspace:0;=
+mso-table-rspace:0;font-weight:400;text-align:left;padding-bottom:40px;padd=
+ing-top:35px;vertical-align:top;border-top:0;border-right:0;border-bottom:0=
+;border-left:0" width=3D"100%"><table border=3D"0" cellpadding=3D"0" cellsp=
+acing=3D"0" class=3D"heading_block block-1" role=3D"presentation" style=3D"=
+mso-table-lspace:0;mso-table-rspace:0" width=3D"100%"><tbody><tr><td class=
+=3D"pad" style=3D"padding-left:40px;padding-right:40px;text-align:center;wi=
+dth:100%"><h1 style=3D"margin:0;color:#500000;direction:ltr;font-family:Ope=
+n Sans,Helvetica Neue,Helvetica,Arial,sans-serif;font-size:26px;font-weight=
+:700;letter-spacing:normal;line-height:120%;text-align:center;margin-top:0;=
+margin-bottom:0"><strong><span class=3D"tinyMce-placeholder">HOWDY, AGS!</s=
+pan></strong></h1></td></tr></tbody></table><table border=3D"0" cellpadding=
+=3D"0" cellspacing=3D"0" class=3D"heading_block block-2" role=3D"presentati=
+on" style=3D"mso-table-lspace:0;mso-table-rspace:0" width=3D"100%"><tbody><=
+tr><td class=3D"pad" style=3D"padding-left:40px;padding-right:40px;padding-=
+top:5px;text-align:center;width:100%"><h1 style=3D"margin:0;color:#000;dire=
+ction:ltr;font-family:Open Sans,Helvetica Neue,Helvetica,Arial,sans-serif;f=
+ont-size:17px;font-weight:400;letter-spacing:normal;line-height:120%;text-a=
+lign:center;margin-top:0;margin-bottom:0"><em>Check out these cool opportun=
+ities!</em></h1></td></tr></tbody></table><table border=3D"0" cellpadding=
+=3D"0" cellspacing=3D"0" class=3D"divider_block block-3" role=3D"presentati=
+on" style=3D"mso-table-lspace:0;mso-table-rspace:0" width=3D"100%"><tbody><=
+tr><td class=3D"pad" style=3D"padding-left:40px;padding-right:40px;padding-=
+top:15px"><div align=3D"center" class=3D"alignment"><table border=3D"0" cel=
+lpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"mso-table-l=
+space:0;mso-table-rspace:0" width=3D"35%"><tbody><tr><td class=3D"divider_i=
+nner" style=3D"font-size:1px;line-height:1px;border-top:2px solid #b4b4b4">=
+<span>=E2=80=8A</span></td></tr></tbody></table></div>
+</td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody>
+</table><table align=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=
+=3D"0" class=3D"row row-4" role=3D"presentation" style=3D"mso-table-lspace:=
+0;mso-table-rspace:0" width=3D"100%"><tbody><tr><td><table align=3D"center"=
+ border=3D"0" cellpadding=3D"0" cellspacing=3D"0" class=3D"row-content stac=
+k" role=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rspace:0;bac=
+kground-color:#fff;color:#000;width:600px;margin:0 auto" width=3D"600"><tbo=
+dy><tr><td class=3D"column column-1" style=3D"mso-table-lspace:0;mso-table-=
+rspace:0;font-weight:400;text-align:left;vertical-align:top;border-top:0;bo=
+rder-right:0;border-bottom:0;border-left:0" width=3D"100%"><table border=3D=
+"0" cellpadding=3D"0" cellspacing=3D"0" class=3D"heading_block block-1" rol=
+e=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rspace:0" width=3D=
+"100%"><tbody><tr><td class=3D"pad" style=3D"padding-bottom:15px;padding-le=
+ft:40px;padding-right:40px;text-align:center;width:100%"><h2 style=3D"margi=
+n:0;color:#000;direction:ltr;font-family:Open Sans,Helvetica Neue,Helvetica=
+,Arial,sans-serif;font-size:20px;font-weight:700;letter-spacing:normal;line=
+-height:120%;text-align:left;margin-top:0;margin-bottom:0"><strong>Events &=
+amp; Opportunities</strong></h2></td></tr></tbody></table><table border=3D"=
+0" cellpadding=3D"0" cellspacing=3D"0" class=3D"divider_block block-2" role=
+=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rspace:0" width=3D"=
+100%"><tbody><tr><td class=3D"pad" style=3D"padding-bottom:20px;padding-lef=
+t:40px;padding-right:40px"><div align=3D"left" class=3D"alignment"><table b=
+order=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=
+=3D"mso-table-lspace:0;mso-table-rspace:0" width=3D"100%"><tbody><tr><td cl=
+ass=3D"divider_inner" style=3D"font-size:1px;line-height:1px;border-top:2px=
+ solid #b4b4b4"><span>=E2=80=8A</span></td></tr></tbody></table></div>
+</td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></tab=
+le><table align=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0"=
+ class=3D"row row-5" role=3D"presentation" style=3D"mso-table-lspace:0;mso-=
+table-rspace:0" width=3D"100%"><tbody><tr><td><table align=3D"center" borde=
+r=3D"0" cellpadding=3D"0" cellspacing=3D"0" class=3D"row-content stack" rol=
+e=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rspace:0;backgroun=
+d-color:#fff;color:#000;width:600px;margin:0 auto" width=3D"600"><tbody><tr=
+><td class=3D"column column-1" style=3D"mso-table-lspace:0;mso-table-rspace=
+:0;font-weight:400;text-align:left;padding-bottom:20px;vertical-align:top;b=
+order-top:0;border-right:0;border-bottom:0;border-left:0" width=3D"100%">
+<!--[if mso]><style>#list-r4c0m0 ul{margin: 0 !important; padding: 0 !impor=
+tant;} #list-r4c0m0 ul li{mso-special-format: bullet;}#list-r4c0m0 .levelOn=
+e li {margin-top: 0 !important;} #list-r4c0m0 .levelOne {margin-left: -20px=
+ !important;}#list-r4c0m0 .levelTwo li {margin-top: 0 !important;} #list-r4=
+c0m0 .levelTwo {margin-left: 20px !important;}#list-r4c0m0 .levelThree li {=
+margin-top: 0 !important;} #list-r4c0m0 .levelThree {margin-left: 60px !imp=
+ortant;}#list-r4c0m0 .levelFour li {margin-top: 0 !important;} #list-r4c0m0=
+ .levelFour {margin-left: 100px !important;}</style><![endif]-->
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" class=3D"list_block=
+ block-1" id=3D"list-r4c0m0" role=3D"presentation" style=3D"mso-table-lspac=
+e:0;mso-table-rspace:0;word-break:break-word" width=3D"100%"><tbody><tr><td=
+ class=3D"pad" style=3D"padding-bottom:10px;padding-left:40px;padding-right=
+:40px"><div class=3D"levelOne" style=3D"margin-left:0"><ul class=3D"leftLis=
+t" start=3D"1" style=3D"margin-top:0;margin-bottom:0;padding:0;padding-left=
+:20px;color:#000;direction:ltr;font-family:Open Sans,Helvetica Neue,Helveti=
+ca,Arial,sans-serif;font-size:14px;font-weight:400;letter-spacing:0;line-he=
+ight:150%;text-align:left;mso-line-height-alt:21px;list-style-type:disc"><l=
+i style=3D"margin-bottom:10px;text-align:left">
+<strong>Ingeniare Symphonium: Engineering Orchestra Auditions: </strong>Ing=
+eniare Symphonium is the university=E2=80=99s first orchestra made up of ON=
+LY engineering students, and we want you to join! We welcome all skill leve=
+ls, and membership is absolutely free. Contact us at <a href=3D"mailto:inge=
+niare@lists.tamu.edu" rel=3D"noopener" style=3D"text-decoration: underline;=
+ color: #006483;" target=3D"_blank">ingeniare@lists.tamu.edu</a> with any q=
+uestions. We can=E2=80=99t wait to hear from you! <a href=3D"[% link:https:=
+//docs.google.com/forms/d/e/1FAIpQLScHbH8bGQJspulmnVlmXvMQtBDUtKMqZ9QxacNit=
+rCWBVxKBA/viewform name=3D&quot;Please fill out our interest form if you wo=
+uld like to audition.&quot; url_only=3D&quot;true&quot; %]" rel=3D"noopener=
+" style=3D"text-decoration: underline; color: #006483;" target=3D"_blank">P=
+lease fill out our interest form if you would like to audition.</a>
+</li><li style=3D"margin-bottom:10px;text-align:left">
+<strong>TAMU NSBE: CONNECTING ALL GRADUATES ENGINEERS &amp; SCHOLARS:</stro=
+ng>&nbsp; Howdy! <a href=3D"[% link:http://www.tamunsbe.org name=3D&quot;TA=
+MU NSBE (National Society of Black Engineers at Texas A&amp;M University)&q=
+uot; url_only=3D&quot;true&quot; %]" rel=3D"noopener" style=3D"text-decorat=
+ion: underline; color: #006483;" target=3D"_blank">TAMU NSBE (National Soci=
+ety of Black Engineers at Texas A&amp;M University)</a>&nbsp;would like to =
+connect with all current graduate students at Texas A&amp;M. <a href=3D"[% =
+link:https://forms.gle/NyVL4Pd9Gj7AiUnu6 name=3D&quot;Please fill out this =
+three minute survey&quot; url_only=3D&quot;true&quot; %]" rel=3D"noopener" =
+style=3D"text-decoration: underline; color: #006483;" target=3D"_blank">Ple=
+ase fill out this three minute survey</a>, and tell us how the TAMU NSBE ch=
+apter can better serve you and the graduates community at Texas A&amp;M. Ou=
+r Mission: We aim to &quot;increase the number of culturally responsible Bl=
+ack Engineers who excel academically, succeed professionally and positively=
+ impact the community.&quot;&nbsp;
+</li><li style=3D"margin-bottom:10px;text-align:left">
+<strong>University Health Services (formerly CAPS) in Zachry: </strong>Stud=
+ent mental health and wellness is important. For this reason, the College o=
+f Engineering and UHS are partnering to offer counseling services, Monday t=
+hrough Friday. <a href=3D"[% link:https://tamucapsportal.pointnclick.com/ n=
+ame=3D&quot;To schedule your first meeting, register for services.&quot; ur=
+l_only=3D&quot;true&quot; %]" rel=3D"noopener" style=3D"text-decoration: un=
+derline; color: #006483;" target=3D"_blank">To schedule your first meeting,=
+ register for services.</a>&nbsp;UHS also offers <a href=3D"[% link:https:/=
+/engineering.tamu.edu/student-life/student-counseling-service-in-zachry.htm=
+l name=3D&quot;drop-in hours&quot; url_only=3D&quot;true&quot; %]" style=3D=
+"text-decoration: underline; color: #006483;">drop-in hours</a> via Zoom ev=
+ery Friday. UHS also provides non-emergency, same-day assistance for immedi=
+ate emotional support needs at the Student Services Building, on the fourth=
+ floor, Monday to Friday, from 8 a.m.-4 p.m. For more information on all se=
+rvices provided by the UHS, please visit their <a href=3D"[% link:http://ca=
+ps.tamu.edu/ name=3D&quot;website&quot; url_only=3D&quot;true&quot; %]" sty=
+le=3D"text-decoration: underline; color: #006483;">website</a>.&nbsp;
+</li></ul></div>
+</td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></tab=
+le><table align=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0"=
+ class=3D"row row-6" role=3D"presentation" style=3D"mso-table-lspace:0;mso-=
+table-rspace:0" width=3D"100%"><tbody><tr><td><table align=3D"center" borde=
+r=3D"0" cellpadding=3D"0" cellspacing=3D"0" class=3D"row-content stack" rol=
+e=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rspace:0;backgroun=
+d-color:#fff;color:#000;width:600px;margin:0 auto" width=3D"600"><tbody>
+<tr><td class=3D"column column-1" style=3D"mso-table-lspace:0;mso-table-rsp=
+ace:0;font-weight:400;text-align:left;vertical-align:top;border-top:0;borde=
+r-right:0;border-bottom:0;border-left:0" width=3D"100%"><table border=3D"0"=
+ cellpadding=3D"0" cellspacing=3D"0" class=3D"heading_block block-1" role=
+=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rspace:0" width=3D"=
+100%"><tbody><tr><td class=3D"pad" style=3D"padding-bottom:15px;padding-lef=
+t:40px;padding-right:40px;text-align:center;width:100%"><h2 style=3D"margin=
+:0;color:#000;direction:ltr;font-family:Open Sans,Helvetica Neue,Helvetica,=
+Arial,sans-serif;font-size:20px;font-weight:700;letter-spacing:normal;line-=
+height:120%;text-align:left;margin-top:0;margin-bottom:0"><strong>Career &a=
+mp; Funding</strong></h2></td></tr></tbody></table><table border=3D"0" cell=
+padding=3D"0" cellspacing=3D"0" class=3D"divider_block block-2" role=3D"pre=
+sentation" style=3D"mso-table-lspace:0;mso-table-rspace:0" width=3D"100%"><=
+tbody><tr><td class=3D"pad" style=3D"padding-bottom:20px;padding-left:40px;=
+padding-right:40px"><div align=3D"left" class=3D"alignment"><table border=
+=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"m=
+so-table-lspace:0;mso-table-rspace:0" width=3D"100%"><tbody><tr><td class=
+=3D"divider_inner" style=3D"font-size:1px;line-height:1px;border-top:2px so=
+lid #b4b4b4"><span>=E2=80=8A</span></td></tr></tbody></table></div>
+</td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></tab=
+le><table align=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0"=
+ class=3D"row row-7" role=3D"presentation" style=3D"mso-table-lspace:0;mso-=
+table-rspace:0" width=3D"100%"><tbody><tr><td><table align=3D"center" borde=
+r=3D"0" cellpadding=3D"0" cellspacing=3D"0" class=3D"row-content stack" rol=
+e=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rspace:0;backgroun=
+d-color:#fff;border-radius:0;color:#000;width:600px;margin:0 auto" width=3D=
+"600"><tbody><tr><td class=3D"column column-1" style=3D"mso-table-lspace:0;=
+mso-table-rspace:0;font-weight:400;text-align:left;padding-bottom:20px;vert=
+ical-align:top;border-top:0;border-right:0;border-bottom:0;border-left:0" w=
+idth=3D"100%"><table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" class=
+=3D"paragraph_block block-1" role=3D"presentation" style=3D"mso-table-lspac=
+e:0;mso-table-rspace:0;word-break:break-word" width=3D"100%"><tbody><tr><td=
+ class=3D"pad" style=3D"padding-bottom:10px;padding-left:40px;padding-right=
+:40px"><div style=3D"color:#000;direction:ltr;font-family:Open Sans,Helveti=
+ca Neue,Helvetica,Arial,sans-serif;font-size:14px;font-weight:400;letter-sp=
+acing:0;line-height:150%;text-align:left;mso-line-height-alt:21px">&nbsp;</=
+div>
+</td></tr></tbody></table>
+<!--[if mso]><style>#list-r6c0m1 ul{margin: 0 !important; padding: 0 !impor=
+tant;} #list-r6c0m1 ul li{mso-special-format: bullet;}#list-r6c0m1 .levelOn=
+e li {margin-top: 0 !important;} #list-r6c0m1 .levelOne {margin-left: -20px=
+ !important;}#list-r6c0m1 .levelTwo li {margin-top: 0 !important;} #list-r6=
+c0m1 .levelTwo {margin-left: 20px !important;}#list-r6c0m1 .levelThree li {=
+margin-top: 0 !important;} #list-r6c0m1 .levelThree {margin-left: 60px !imp=
+ortant;}</style><![endif]--><table border=3D"0" cellpadding=3D"0" cellspaci=
+ng=3D"0" class=3D"list_block block-2" id=3D"list-r6c0m1" role=3D"presentati=
+on" style=3D"mso-table-lspace:0;mso-table-rspace:0;word-break:break-word" w=
+idth=3D"100%"><tbody><tr><td class=3D"pad" style=3D"padding-bottom:10px;pad=
+ding-left:40px;padding-right:40px"><div class=3D"levelOne" style=3D"margin-=
+left:0"><ul class=3D"leftList" start=3D"1" style=3D"margin-top:0;margin-bot=
+tom:0;padding:0;padding-left:20px;color:#000;direction:ltr;font-family:Open=
+ Sans,Helvetica Neue,Helvetica,Arial,sans-serif;font-size:14px;font-weight:=
+400;letter-spacing:0;line-height:150%;text-align:left;mso-line-height-alt:2=
+1px;list-style-type:disc"><li style=3D"margin-bottom:10px;text-align:left">
+<strong>Finding a Job/Internship (Event Date - 10/17)&nbsp;</strong> Effect=
+ively find job &amp; internship postings using HireAggies, LinkedIn, and Ca=
+reerShift. <a href=3D"[% link:https://tamu.zoom.us/meeting/register/tJMudu6=
+pqjopGNBpF1vmtrDIC4ldIe_jVASj name=3D&quot;Register for our Finding a Job/I=
+nternship workshop.&quot; url_only=3D&quot;true&quot; %]" rel=3D"noopener" =
+style=3D"text-decoration: underline; color: #006483;" target=3D"_blank">Reg=
+ister for our Finding a Job/Internship workshop.</a></li><li style=3D"margi=
+n-bottom:10px;text-align:left">
+<strong>On-Campus Employer Event - Adobe (Event Date - 10/17): </strong>Joi=
+n us for an exciting opportunity to supercharge your career in Computer Sci=
+ence, Electrical Engineering, Data Science, or ML development! Whether you'=
+re a Masters or PhD student, we're on the lookout for talent with a graduat=
+ion date of at least December 2024. With the chance to submit your resume a=
+nd register, you can be part of a transformative experience. Even researche=
+rs seeking insights are welcome, as our team is here to guide you. Don't mi=
+ss out on this incredible chance to shape your future! <a href=3D"[% link:h=
+ttps://careers.adobe.com/us/en/event/64e5256e9df18541dda150ab/Texas-A-M-Uni=
+versity-College-Station name=3D&quot;Be sure to register with your personal=
+ email address.&quot; url_only=3D&quot;true&quot; %]" rel=3D"noopener" styl=
+e=3D"text-decoration: underline; color: #006483;" target=3D"_blank">Be sure=
+ to register with your personal email address.</a>
+</li><li style=3D"margin-bottom:10px;text-align:left">
+<strong>Texas A&amp;M Academy Night (Event Date - 10/17): </strong>Join us =
+for <a href=3D"[% link:https://drive.google.com/file/d/1sbOD1mk2xWEeoRYEteV=
+FkmZ8y5EiGGGa/view name=3D&quot;TAMU Academy Night&quot; url_only=3D&quot;t=
+rue&quot; %]" rel=3D"noopener" style=3D"text-decoration: underline; color: =
+#006483;" target=3D"_blank">TAMU Academy Night</a>, where the Academy is re=
+turning to campus for an exciting evening event! All majors and classificat=
+ions are welcome, so don't miss out. <a href=3D"[% link:https://forms.offic=
+e.com/Pages/ResponsePage.aspx?id=3D4bbwNOIJwUa35hdXeTT59RH_Cry3tUpOs3w2Bman=
+oFlUMjBZTFFYUk9NSjVDOU5IQlNBNzhPRTZZVS4u name=3D&quot;RSVP for this event.&=
+quot; url_only=3D&quot;true&quot; %]" rel=3D"noopener" style=3D"text-decora=
+tion: underline; color: #006483;" target=3D"_blank">RSVP for this event.</a=
+> <a href=3D"[% link:https://forms.office.com/Pages/ResponsePage.aspx?id=3D=
+4bbwNOIJwUa35hdXeTT59RH_Cry3tUpOs3w2BmanoFlUMjBZTFFYUk9NSjVDOU5IQlNBNzhPRTZ=
+ZVS4u name=3D&quot;https://forms.office.com/Pages/ResponsePage.aspx?id=3D4b=
+bwNOIJwUa35hdXeTT59RH_Cry3tUpOs3w2BmanoFlUMjBZTFFYUk9NSjVDOU5IQlNBNzhPRTZZV=
+S4u&quot; url_only=3D&quot;true&quot; %]" rel=3D"noopener" style=3D"text-de=
+coration: underline; color: #006483;" target=3D"_blank"></a>We also have in=
+credible opportunities for graduating seniors in our Executive Trainee Prog=
+ram and 2024 Summer Internship Program, with interviews scheduled for Octob=
+er 18.
+</li><li style=3D"margin-bottom:10px;text-align:left">
+<strong>Unlocking LinkedIn's Hidden Power (Event Date - 10/18):</strong> Le=
+arn how to make your LinkedIn profile more effective and how to use LinkedI=
+n as a research, networking, and job finding tool. Insightful course for al=
+l skill levels from new user to expert. <a href=3D"[% link:https://tamu.zoo=
+m.us/meeting/register/tJEofuCqrDIsGtCqXfbw1Oft-jnzhALYaSDM name=3D&quot;Reg=
+ister for our LinkedIn workshop.&quot; url_only=3D&quot;true&quot; %]" rel=
+=3D"noopener" style=3D"text-decoration: underline; color: #006483;" target=
+=3D"_blank">Register for our LinkedIn workshop.</a></li><li style=3D"margin=
+-bottom:10px;text-align:left">
+<strong>Immigration 101 Webinar (Event Date - 10/18): </strong>Howdy Texas =
+A&amp;M international students! Here's a fantastic opportunity you won't wa=
+nt to miss: Join us on Oct. 18 from 5:30-7:30 p.m. for an enlightening webi=
+nar titled &quot;Life After Graduation: What is Your Immigration Plan?&quot=
+; in collaboration with the&nbsp; Texas A&amp;M Career Center, ISSS, and Te=
+xas A&amp;M University, along with Fragomen Law Firm. This event will provi=
+de crucial insights into U.S. career options, immigration opportunities, an=
+d the specialized services offered to international students. Plus, you can=
+ have a direct chat with an ISSS advisor. <a href=3D"[% link:https://tinyur=
+l.com/ypbr4bnc name=3D&quot;Register now&quot; url_only=3D&quot;true&quot; =
+%]" style=3D"text-decoration: underline; color: #006483;">Register now</a> =
+and let's shape your exciting post-graduation journey together!
+</li><li style=3D"margin-bottom:10px;text-align:left">
+<strong><strong>Build Your Project Portfolio Workshop (Event Date - 10/24):=
+ </strong></strong>Ready to distinguish yourself as a future data analyst o=
+r computer scientist? <a href=3D"[% link:https://docs.google.com/forms/d/e/=
+1FAIpQLScvuLVdf5WEBDctZxGneisOZ84F34onXQvrMaly9SbYOeSnFw/viewform?pli=3D1 n=
+ame=3D&quot;Register for our Career Center's exclusive workshop&quot; url_o=
+nly=3D&quot;true&quot; %]" rel=3D"noopener" style=3D"text-decoration: under=
+line; color: #006483;" target=3D"_blank">Register for our Career Center's e=
+xclusive workshop</a>&nbsp;at <strong>10:30-11:30 a.m.</strong> in ZACH 297=
+ and embark on a journey to craft your unique online presence. Learn how to=
+ create a professional website and leverage the power of GitHub to showcase=
+ your skills and projects. We'll teach you the strategies to grab the atten=
+tion of recruiters in a competitive job market. Don't miss this chance to e=
+levate your career prospects. Take a proactive step towards a successful fu=
+ture in tech =E2=80=93 join us and unlock your potential!
+</li><li style=3D"margin-bottom:10px;text-align:left">
+<strong>Virtual Information Sessions - Getting to Know Goldman Sachs:</stro=
+ng> Calling all ambitious students to unlock your future in finance with Go=
+ldman Sachs' exclusive virtual series. Join us to explore the 2024 Summer A=
+nalyst Programs in Compliance, Controllers, Operations, and Risk. Get insid=
+er tips from our recruiters, stand out in the competitive field, and gain v=
+aluable insights to launch your career. Don't miss this chance to kick-star=
+t your journey with Goldman Sachs. <a href=3D"[% link:https://recruiting360=
+.avature.net/candidates?projectId=3D19889&amp;source=3DCandidate+Porta name=
+=3D&quot;Register now for one of two sessions.&quot; url_only=3D&quot;true&=
+quot; %]" rel=3D"noopener" style=3D"text-decoration: underline; color: #006=
+483;" target=3D"_blank">Register now for one of two sessions.</a>
+</li><li style=3D"margin-bottom:10px;text-align:left"><strong>Career Center=
+ - HireAggies:</strong> Still looking for a summer internship? Don't forget=
+ to check out <a href=3D"[% link:https://careercenter.tamu.edu/ name=3D&quo=
+t;HireAggies.com&quot; url_only=3D&quot;true&quot; %]" rel=3D"noopener" sty=
+le=3D"text-decoration: underline; color: #006483;" target=3D"_blank">HireAg=
+gies.com</a> where there are over 100 opportunities available to apply for!=
+</li></ul></div>
+</td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></tab=
+le><table align=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0"=
+ class=3D"row row-8" role=3D"presentation" style=3D"mso-table-lspace:0;mso-=
+table-rspace:0" width=3D"100%"><tbody><tr><td><table align=3D"center" borde=
+r=3D"0" cellpadding=3D"0" cellspacing=3D"0" class=3D"row-content stack" rol=
+e=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rspace:0;backgroun=
+d-color:#fff;color:#000;width:600px;margin:0 auto" width=3D"600"><tbody><tr=
+><td class=3D"column column-1" style=3D"mso-table-lspace:0;mso-table-rspace=
+:0;font-weight:400;text-align:left;vertical-align:top;border-top:0;border-r=
+ight:0;border-bottom:0;border-left:0" width=3D"100%"><table border=3D"0" ce=
+llpadding=3D"0" cellspacing=3D"0" class=3D"heading_block block-1" role=3D"p=
+resentation" style=3D"mso-table-lspace:0;mso-table-rspace:0" width=3D"100%"=
+><tbody><tr><td class=3D"pad" style=3D"padding-bottom:15px;padding-left:40p=
+x;padding-right:40px;text-align:center;width:100%"><h2 style=3D"margin:0;co=
+lor:#000;direction:ltr;font-family:Open Sans,Helvetica Neue,Helvetica,Arial=
+,sans-serif;font-size:20px;font-weight:700;letter-spacing:normal;line-heigh=
+t:120%;text-align:left;margin-top:0;margin-bottom:0"><strong>Academics</str=
+ong></h2></td></tr></tbody></table><table border=3D"0" cellpadding=3D"0" ce=
+llspacing=3D"0" class=3D"divider_block block-2" role=3D"presentation" style=
+=3D"mso-table-lspace:0;mso-table-rspace:0" width=3D"100%"><tbody><tr><td cl=
+ass=3D"pad" style=3D"padding-bottom:20px;padding-left:40px;padding-right:40=
+px"><div align=3D"left" class=3D"alignment"><table border=3D"0" cellpadding=
+=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0;=
+mso-table-rspace:0" width=3D"100%"><tbody><tr><td class=3D"divider_inner" s=
+tyle=3D"font-size:1px;line-height:1px;border-top:2px solid #b4b4b4"><span>=
+=E2=80=8A</span></td></tr></tbody></table></div>
+</td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></tab=
+le><table align=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0"=
+ class=3D"row row-9" role=3D"presentation" style=3D"mso-table-lspace:0;mso-=
+table-rspace:0" width=3D"100%"><tbody><tr><td><table align=3D"center" borde=
+r=3D"0" cellpadding=3D"0" cellspacing=3D"0" class=3D"row-content stack" rol=
+e=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rspace:0;backgroun=
+d-color:#fff;border-radius:0;color:#000;width:600px;margin:0 auto" width=3D=
+"600"><tbody><tr><td class=3D"column column-1" style=3D"mso-table-lspace:0;=
+mso-table-rspace:0;font-weight:400;text-align:left;padding-bottom:20px;vert=
+ical-align:top;border-top:0;border-right:0;border-bottom:0;border-left:0" w=
+idth=3D"100%">
+<!--[if mso]><style>#list-r8c0m0 ul{margin: 0 !important; padding: 0 !impor=
+tant;} #list-r8c0m0 ul li{mso-special-format: bullet;}#list-r8c0m0 .levelOn=
+e li {margin-top: 0 !important;} #list-r8c0m0 .levelOne {margin-left: -20px=
+ !important;}#list-r8c0m0 .levelTwo li {margin-top: 0 !important;} #list-r8=
+c0m0 .levelTwo {margin-left: 20px !important;}#list-r8c0m0 .levelThree li {=
+margin-top: 0 !important;} #list-r8c0m0 .levelThree {margin-left: 60px !imp=
+ortant;}#list-r8c0m0 .levelFour li {margin-top: 0 !important;} #list-r8c0m0=
+ .levelFour {margin-left: 100px !important;}</style><![endif]-->
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" class=3D"list_block=
+ block-1" id=3D"list-r8c0m0" role=3D"presentation" style=3D"mso-table-lspac=
+e:0;mso-table-rspace:0;word-break:break-word" width=3D"100%"><tbody><tr><td=
+ class=3D"pad" style=3D"padding-bottom:10px;padding-left:40px;padding-right=
+:40px"><div class=3D"levelOne" style=3D"margin-left:0"><ul class=3D"leftLis=
+t" start=3D"1" style=3D"margin-top:0;margin-bottom:0;padding:0;padding-left=
+:20px;color:#000;direction:ltr;font-family:Open Sans,Helvetica Neue,Helveti=
+ca,Arial,sans-serif;font-size:14px;font-weight:400;letter-spacing:0;line-he=
+ight:150%;text-align:left;mso-line-height-alt:21px;list-style-type:disc"><l=
+i style=3D"margin-bottom:10px;text-align:left">
+<strong>Launching Your Entrepreneurial Mindset: </strong>An entrepreneurial=
+ mindset is resilient, resourceful and solution-oriented; indeed the mindse=
+t of a life-long learner! Consider a one-hour course requiring minimal effo=
+rt outside the classroom, but offering to have a positive impact on your fu=
+ture as an engineer! You=E2=80=99ll hear the journeys of successful entrepr=
+eneurs in technology innovation and find you already possess many of the ch=
+aracteristics required to succeed! All are welcome, but space is limited fo=
+r MTDE 252/462/652. Visit the <a href=3D"[% link:https://engineering.tamu.e=
+du/student-life/eep/index.html name=3D&quot;Meloy Engineering Innovation an=
+d Entrepreneurship Program&quot; url_only=3D&quot;true&quot; %]" style=3D"t=
+ext-decoration: underline; color: #006483;">Meloy Engineering Innovation an=
+d Entrepreneurship Program</a> and explore our many courses.
+</li><li style=3D"margin-bottom:10px;text-align:left">
+<strong>Engineering Global Programs Opportunities:</strong> Howdy! Are you =
+interested in studying what you love while exploring the world? <a href=3D"=
+[% link:https://engineering.tamu.edu/academics/global/opportunities-abroad/=
+index.html name=3D&quot;View our available programs on our website, and app=
+ly to one you are interested in today!&quot; url_only=3D&quot;true&quot; %]=
+" rel=3D"noopener" style=3D"text-decoration: underline; color: #006483;" ta=
+rget=3D"_blank">View our available programs on our website, and apply to on=
+e you are interested in today!</a> Our office assists engineering students =
+with finding programs that are right for them, ranging from faculty-led cla=
+sses to semester exchanges at foreign universities across the globe. <a hre=
+f=3D"[% link:https://tamuabroad.via-trm.com/authV2/welcome name=3D&quot;Cre=
+ate a VIA account with your NetID to become a traveler today through our po=
+rtal&quot; url_only=3D&quot;true&quot; %]" rel=3D"noopener" style=3D"text-d=
+ecoration: underline; color: #006483;" target=3D"_blank">Create a VIA accou=
+nt with your NetID to become a traveler today through our portal</a>, or vi=
+sit our office in ZACH 410.
+</li></ul></div>
+</td></tr></tbody></table><table border=3D"0" cellpadding=3D"0" cellspacing=
+=3D"0" class=3D"paragraph_block block-2" role=3D"presentation" style=3D"mso=
+-table-lspace:0;mso-table-rspace:0;word-break:break-word" width=3D"100%"><t=
+body><tr><td class=3D"pad" style=3D"padding-bottom:10px;padding-left:40px;p=
+adding-right:40px"><div style=3D"color:#000;direction:ltr;font-family:Open =
+Sans,Helvetica Neue,Helvetica,Arial,sans-serif;font-size:14px;font-weight:4=
+00;letter-spacing:0;line-height:150%;text-align:left;mso-line-height-alt:21=
+px">&nbsp;</div>
+</td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></tab=
+le><table align=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0"=
+ class=3D"row row-10" role=3D"presentation" style=3D"mso-table-lspace:0;mso=
+-table-rspace:0" width=3D"100%"><tbody><tr><td><table align=3D"center" bord=
+er=3D"0" cellpadding=3D"0" cellspacing=3D"0" class=3D"row-content stack" ro=
+le=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rspace:0;backgrou=
+nd-color:#fff;border-radius:0;color:#000;width:600px;margin:0 auto" width=
+=3D"600"><tbody><tr><td class=3D"column column-1" style=3D"mso-table-lspace=
+:0;mso-table-rspace:0;font-weight:400;text-align:left;padding-bottom:10px;v=
+ertical-align:top;border-top:0;border-right:0;border-bottom:0;border-left:0=
+" width=3D"100%"><table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" cl=
+ass=3D"paragraph_block block-1" role=3D"presentation" style=3D"mso-table-ls=
+pace:0;mso-table-rspace:0;word-break:break-word" width=3D"100%"><tbody><tr>=
+<td class=3D"pad" style=3D"padding-bottom:20px;padding-left:40px;padding-ri=
+ght:40px"><div style=3D"color:#000;direction:ltr;font-family:Open Sans,Helv=
+etica Neue,Helvetica,Arial,sans-serif;font-size:14px;font-weight:400;letter=
+-spacing:0;line-height:150%;text-align:left;mso-line-height-alt:21px"><p st=
+yle=3D"margin:0">
+If you have ANY questions or concerns, please contact us at <strong><a href=
+=3D"mailto:engineeringvcd@tamu.edu" rel=3D"noopener" style=3D"text-decorati=
+on: underline; color: #006483;" target=3D"_blank" title=3D"engineeringvcd@t=
+amu.edu">engineeringvcd@tamu.edu</a></strong>.</p>
+</div>
+</td></tr></tbody></table><table border=3D"0" cellpadding=3D"0" cellspacing=
+=3D"0" class=3D"paragraph_block block-2" role=3D"presentation" style=3D"mso=
+-table-lspace:0;mso-table-rspace:0;word-break:break-word" width=3D"100%"><t=
+body><tr>
+<td class=3D"pad" style=3D"padding-bottom:20px;padding-left:40px;padding-ri=
+ght:40px"><div style=3D"color:#000;direction:ltr;font-family:Open Sans,Helv=
+etica Neue,Helvetica,Arial,sans-serif;font-size:14px;font-weight:400;letter=
+-spacing:0;line-height:150%;text-align:left;mso-line-height-alt:21px"><p st=
+yle=3D"margin:0">Thanks &amp; Gig 'em!</p>
+</div>
+</td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></tab=
+le><table align=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0"=
+ class=3D"row row-11" role=3D"presentation" style=3D"mso-table-lspace:0;mso=
+-table-rspace:0" width=3D"100%"><tbody><tr><td><table align=3D"center" bord=
+er=3D"0" cellpadding=3D"0" cellspacing=3D"0" class=3D"row-content stack" ro=
+le=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rspace:0;backgrou=
+nd-color:#fff;border-radius:0;color:#000;width:600px;margin:0 auto" width=
+=3D"600"><tbody><tr><td class=3D"column column-1" style=3D"mso-table-lspace=
+:0;mso-table-rspace:0;font-weight:400;text-align:left;padding-bottom:10px;v=
+ertical-align:top;border-top:0;border-right:0;border-bottom:0;border-left:0=
+" width=3D"100%"><table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" cl=
+ass=3D"paragraph_block block-1" role=3D"presentation" style=3D"mso-table-ls=
+pace:0;mso-table-rspace:0;word-break:break-word" width=3D"100%"><tbody><tr>=
+<td class=3D"pad" style=3D"padding-bottom:20px;padding-left:40px;padding-ri=
+ght:40px"><div style=3D"color:#500000;direction:ltr;font-family:Open Sans,H=
+elvetica Neue,Helvetica,Arial,sans-serif;font-size:14px;font-weight:700;let=
+ter-spacing:0;line-height:120%;text-align:left;mso-line-height-alt:16.8px">=
+<p style=3D"margin:0;margin-bottom:14px"><strong>College of Engineering </s=
+trong></p>
+<p style=3D"margin:0;margin-bottom:14px"><strong>Texas A&amp;M University</=
+strong></p>
+<p style=3D"margin:0"><strong>Engineering Academic and Student Affairs</str=
+ong></p>
+</div>
+</td></tr></tbody></table></td></tr></tbody>
+</table></td></tr></tbody></table><table align=3D"center" border=3D"0" cell=
+padding=3D"0" cellspacing=3D"0" class=3D"row row-12" role=3D"presentation" =
+style=3D"mso-table-lspace:0;mso-table-rspace:0" width=3D"100%"><tbody><tr><=
+td><table align=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0"=
+ class=3D"row-content stack" role=3D"presentation" style=3D"mso-table-lspac=
+e:0;mso-table-rspace:0;background-color:#fff;border-radius:0;color:#000;wid=
+th:600px;margin:0 auto" width=3D"600"><tbody><tr><td class=3D"column column=
+-1" style=3D"mso-table-lspace:0;mso-table-rspace:0;font-weight:400;text-ali=
+gn:left;padding-top:10px;vertical-align:top;border-top:0;border-right:0;bor=
+der-bottom:0;border-left:0" width=3D"100%"><table border=3D"0" cellpadding=
+=3D"0" cellspacing=3D"0" class=3D"image_block block-1" role=3D"presentation=
+" style=3D"mso-table-lspace:0;mso-table-rspace:0" width=3D"100%"><tbody><tr=
+><td class=3D"pad" style=3D"width:100%"><div align=3D"center" class=3D"alig=
+nment" style=3D"line-height:10px"><img src=3D"https://d31hzlhk6di2h5.cloudf=
+ront.net/20231016/e0/2b/61/d9/b4ee539f58df418883f78c86.jpg" style=3D"displa=
+y:block;height:auto;border:0;max-width:600px;width:100%" width=3D"600"></di=
+v>
+</td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></tab=
+le><table align=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0"=
+ class=3D"row row-13" role=3D"presentation" style=3D"mso-table-lspace:0;mso=
+-table-rspace:0" width=3D"100%"><tbody><tr><td><table align=3D"center" bord=
+er=3D"0" cellpadding=3D"0" cellspacing=3D"0" class=3D"row-content stack" ro=
+le=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rspace:0;border-r=
+adius:0;color:#000;background-color:#eee;width:600px;margin:0 auto" width=
+=3D"600"><tbody><tr><td class=3D"column column-1" style=3D"mso-table-lspace=
+:0;mso-table-rspace:0;font-weight:400;text-align:left;padding-bottom:40px;p=
+adding-left:40px;padding-right:40px;padding-top:30px;vertical-align:top;bor=
+der-top:0;border-right:0;border-bottom:0;border-left:0" width=3D"100%"><tab=
+le border=3D"0" cellpadding=3D"0" cellspacing=3D"0" class=3D"paragraph_bloc=
+k block-1" role=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rspa=
+ce:0;word-break:break-word" width=3D"100%"><tbody><tr><td class=3D"pad"><di=
+v style=3D"color:#444;direction:ltr;font-family:Open Sans,Helvetica Neue,He=
+lvetica,Arial,sans-serif;font-size:14px;font-weight:400;letter-spacing:0;li=
+ne-height:150%;text-align:left;mso-line-height-alt:21px"><p style=3D"margin=
+:0;margin-bottom:16px">
+You are receiving this official university correspondence, <em>sent on beha=
+lf of Texas A&amp;M College of Engineering, </em>because you are either an =
+incoming, current or former student, affiliate, staff or faculty member of =
+Texas A&amp;M University.</p>
+<p style=3D"margin:0">This email was sent to [% member:email %].</p>
+</div>
+</td></tr></tbody></table><table border=3D"0" cellpadding=3D"0" cellspacing=
+=3D"0" class=3D"divider_block block-2" role=3D"presentation" style=3D"mso-t=
+able-lspace:0;mso-table-rspace:0" width=3D"100%"><tbody><tr>
+<td class=3D"pad" style=3D"padding-bottom:20px;padding-top:20px"><div align=
+=3D"center" class=3D"alignment"><table border=3D"0" cellpadding=3D"0" cells=
+pacing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rs=
+pace:0" width=3D"100%"><tbody><tr><td class=3D"divider_inner" style=3D"font=
+-size:1px;line-height:1px;border-top:1px dotted #444"><span>=E2=80=8A</span=
+></td></tr></tbody></table></div>
+</td></tr></tbody></table><table border=3D"0" cellpadding=3D"0" cellspacing=
+=3D"0" class=3D"paragraph_block block-3" role=3D"presentation" style=3D"mso=
+-table-lspace:0;mso-table-rspace:0;word-break:break-word" width=3D"100%"><t=
+body><tr><td class=3D"pad"><div style=3D"color:#444;direction:ltr;font-fami=
+ly:Open Sans,Helvetica Neue,Helvetica,Arial,sans-serif;font-size:14px;font-=
+weight:400;letter-spacing:0;line-height:150%;text-align:left;mso-line-heigh=
+t-alt:21px"><p style=3D"margin:0">3127 TAMU Texas A&amp;M University | Coll=
+ege Station, TX 77843 US</p>
+</div>
+</td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></tab=
+le><table align=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0"=
+ class=3D"row row-14" role=3D"presentation" style=3D"mso-table-lspace:0;mso=
+-table-rspace:0;background-color:#dedede" width=3D"100%"><tbody><tr><td><ta=
+ble align=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" class=
+=3D"row-content stack" role=3D"presentation" style=3D"mso-table-lspace:0;ms=
+o-table-rspace:0;border-radius:0;color:#000;width:600px;margin:0 auto" widt=
+h=3D"600"><tbody><tr><td class=3D"column column-1" style=3D"mso-table-lspac=
+e:0;mso-table-rspace:0;font-weight:400;text-align:left;padding-top:20px;ver=
+tical-align:top;border-top:0;border-right:0;border-bottom:0;border-left:0" =
+width=3D"100%"><table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" clas=
+s=3D"html_block block-1" role=3D"presentation" style=3D"mso-table-lspace:0;=
+mso-table-rspace:0" width=3D"100%"><tbody><tr><td class=3D"pad"><div align=
+=3D"center" style=3D"font-family:Open Sans,Helvetica Neue,Helvetica,Arial,s=
+ans-serif;text-align:center"></div>
+</td></tr>
+</tbody></table></td></tr></tbody></table></td></tr></tbody></table></td></=
+tr></tbody></table><!-- End -->
+</body></html>=
+
+--==169750801333974==--
